@@ -5,87 +5,89 @@
 :root {
   font-size: 18px;
   --main-color: black;
-  --secondary-color: rgb(55, 55, 50);
+  --secondary-color: rgb(31, 62, 89);
 }
 
+.container {
+  height: 100vh;
+  display: flex;
+  gap: 1rem;
+}
+.container-page {
+  width: 100%;
+}
 nav {
   background-color: var(--main-color);
   color: white;
-  padding: 20px;
+  padding: 0.5rem;
+  text-align: center;
   & h1 {
-    font-size: 2rem;
+    font-size: 1.2rem;
   }
 }
-
 .header-div {
-  padding: 1rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  margin: 1rem auto;
   & h2 {
     font-size: 2rem;
   }
   & button {
     border: none;
-    padding: 1rem 3rem;
-    font-size: 1.1rem;
+    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
     background-color: var(--secondary-color);
     color: white;
     transition: 0.4s;
+    margin-right: 2rem;
     &:hover {
       cursor: pointer;
-      transform: scale(1.05);
+      background-color: rgb(34, 34, 32);
     }
   }
 }
-
 hr:first-of-type {
   margin-bottom: 2rem;
 }
-
-.container {
-  display: grid;
-  grid-template-columns: repeat(3, max(300px, 400px));
-  gap: 20px;
-  align-content: center;
-  justify-content: center;
+table {
+  width: 98%;
+  margin-right: 2rem;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
-.book {
-  background-color: var(--main-color);
-  height: 300px;
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  & h3 {
-    font-weight: normal;
-  }
-  & .book-name,
-  .book-author {
-    font-weight: 600;
-  }
-
-  & hr {
-    width: 100%;
-    margin: 1rem auto;
-  }
-  & select {
-    font-size: 1rem;
-    padding: 4px;
-  }
-  & button {
-    padding: 10px 2rem;
-    font-size: 1rem;
-    background-color: rgb(147, 29, 29);
+thead {
+  font-size: 1.1rem;
+  & tr {
+    background-color: var(--secondary-color);
     color: white;
-    border: none;
-    transition: 0.4s;
-    &:hover {
-      transform: scale(1.08);
-      cursor: pointer;
+  }
+}
+tbody {
+  & tr td:first-of-type {
+    font-style: italic;
+    &:before {
+      content: '"';
+    }
+    &:after {
+      content: '"';
     }
   }
+  & tr:nth-child(even) {
+    background-color: rgb(195, 194, 194);
+  }
 }
+th,
+tr,
+td {
+  padding: 10px;
+  text-align: left;
+}
+td,
+th {
+  padding-left: 1rem;
+  height: 2rem;
+}
+
