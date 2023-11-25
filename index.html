@@ -6,6 +6,10 @@
     <title>Librería</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
+    />
   </head>
   <body>
     <div class="container">
@@ -13,9 +17,49 @@
         <h1>Personal</h1>
       </nav>
       <div class="container-page">
+        <dialog id="new-book-popup">
+          <h3>Nuevo Libro</h3>
+          <form method="dialog" id="form-new-book">
+            <section>
+              <i class="bi bi-book"></i>
+              <input
+                type="text"
+                id="book-name"
+                placeholder="Nombre del Libro"
+              />
+            </section>
+            <section>
+              <i class="bi bi-person-circle"></i>
+              <input
+                type="text"
+                id="author-name"
+                placeholder="Nombre del Autor"
+              />
+            </section>
+            <section>
+              <i class="bi bi-file-earmark"></i>
+              <input
+                type="number"
+                id="number-pages"
+                placeholder="Número de Páginas"
+              />
+            </section>
+            <section class="section-estatus">
+              <label for="estatus"
+                >¿Haz leído este libro?
+                <input type="checkbox" name="estatus" id="estatus" />
+              </label>
+            </section>
+            <section class="btn-section">
+              <button id="cancel" type="reset">Cancelar</button>
+              <button type="submit" id="btn-submit">Añadir libro</button>
+            </section>
+          </form>
+        </dialog>
+
         <div class="header-div">
           <h2>Mis Libros</h2>
-          <button>Nuevo Libro</button>
+          <button id="newBook">Nuevo Libro</button>
         </div>
         <hr style="margin-right: 2rem" />
         <div class="container-library">
@@ -24,65 +68,12 @@
               <tr>
                 <th>Nombre</th>
                 <th>Autor</th>
+                <th>Número de páginas</th>
                 <th>Estado</th>
-                <th>Eliminar Libro</th>
+                <th style="text-align: center;">Eliminar Libro</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Las Crónicas de Narnia</td>
-                <td>CS. Lewis</td>
-                <td>
-                  <select name="" id="">
-                    <option value="unread">No Leído</option>
-                    <option value="read">Leído</option>
-                  </select>
-                </td>
-                <td><button>Eliminar</button></td>
-              </tr>
-              <tr>
-                <td>Las Crónicas de Narnia</td>
-                <td>CS. Lewis</td>
-                <td>
-                  <select name="" id="">
-                    <option value="unread">No Leído</option>
-                    <option value="read">Leído</option>
-                  </select>
-                </td>
-                <td><button>Eliminar</button></td>
-              </tr>
-              <tr>
-                <td>Las Crónicas de Narnia</td>
-                <td>CS. Lewis</td>
-                <td>
-                  <select name="" id="">
-                    <option value="unread">No Leído</option>
-                    <option value="read">Leído</option>
-                  </select>
-                </td>
-                <td><button>Eliminar</button></td>
-              </tr><tr>
-                <td>Las Crónicas de Narnia</td>
-                <td>CS. Lewis</td>
-                <td>
-                  <select name="" id="">
-                    <option value="unread">No Leído</option>
-                    <option value="read">Leído</option>
-                  </select>
-                </td>
-                <td><button>Eliminar</button></td>
-              </tr>
-            </tr><tr>
-              <td>Las Crónicas de Narnia</td>
-              <td>CS. Lewis</td>
-              <td>
-                <select name="" id="">
-                  <option value="unread">No Leído</option>
-                  <option value="read">Leído</option>
-                </select>
-              </td>
-              <td><button>Eliminar</button></td>
-            </tr>
             </tbody>
           </table>
         </div>
