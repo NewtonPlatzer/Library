@@ -16,7 +16,7 @@
 .container-page {
   width: 100%;
 }
-nav {
+aside {
   background-color: var(--main-color);
   color: white;
   text-align: center;
