@@ -35,7 +35,8 @@ function addBookToLibrary(name, author, pages, status) {
   let index = library.length + 1;
   let book = new Book(index, name, author, pages, status);
   library.push(book);
-  messageBooks(true);
+  localStorage.setItem("library", JSON.stringify(library)); // Almacenamiento
+  //
   let tBodyTableBooks = document.querySelector("#tbody-table-books");
   let tr = document.createElement("tr");
   let tdName = document.createElement("td");
@@ -81,21 +82,25 @@ function removeBook() {
   });
 }
 function displayBooks() {
-  if (library.length == 0) {
+  let libraryLocalStorage = localStorage.getItem("library");
+  let libraryReal = JSON.parse(libraryLocalStorage);
+  if (libraryReal.length == 0) {
     messageBooks(false);
   } else {
     messageBooks(true);
-    for (let i = 0; i < library.length; i++) {
+    for (let i = 0; i < libraryReal.length; i++) {
+      let tBodyTableBooks = document.querySelector("#tbody-table-books");
+
       let tr = document.createElement("tr");
       let tdName = document.createElement("td");
       let tdAuthor = document.createElement("td");
       let tdPages = document.createElement("td");
       let tdStatus = document.createElement("td");
       let tdTrash = document.createElement("td");
-      tdName.innerText = library[i].name;
-      tdAuthor.innerText = library[i].author;
-      tdPages.innerText = library[i].pages;
-      tdStatus.innerText = library[i].status;
+      tdName.innerText = libraryReal[i].name;
+      tdAuthor.innerText = libraryReal[i].author;
+      tdPages.innerText = libraryReal[i].pages;
+      tdStatus.innerText = libraryReal[i].status;
       tdTrash.innerHTML = '<a><i class="bi bi-trash-fill"></i></a>';
       tr.appendChild(tdName);
       tr.appendChild(tdAuthor);
