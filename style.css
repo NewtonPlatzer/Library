@@ -17,15 +17,15 @@
   width: 100%;
 }
 nav {
-  background-color: var(--secondary-color);
+  background-color: var(--main-color);
   color: white;
   text-align: center;
   padding-top: 1rem;
   & a {
     & img {
-      width: 130px;
+      width: 100px;
       object-fit: contain;
-      margin-right: 16px;
+      margin: auto 6px;
     }
   }
 }
