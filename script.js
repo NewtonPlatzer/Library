@@ -36,15 +36,7 @@ function addBookToLibrary(name, author, pages, status) {
   let book = new Book(index, name, author, pages, status);
   library.push(book);
   messageBooks(true);
-  // let containerLibrary = document.querySelector(".container-library");
-  // let tableBooks = document.getElementById("table-books");
   let tBodyTableBooks = document.querySelector("#tbody-table-books");
-  // let messageNoBooks = document.querySelector(".message-no-books");
-  // let btnNewBook2 = document.querySelector(".newBook2");
-  // tableBooks.style.display = "table";
-  // containerLibrary.style.textAlign = "left";
-  // messageNoBooks.style.display = "none";
-  // btnNewBook2.style.display = "none";
   let tr = document.createElement("tr");
   let tdName = document.createElement("td");
   let tdAuthor = document.createElement("td");
@@ -72,27 +64,27 @@ function removeBook() {
   btnsRemove.forEach((btnRemove) => {
     btnRemove.addEventListener("click", () => {
       let bookDelete = btnRemove.parentNode.parentNode; // Obtengo la fila a eliminar del DOM
-      let validateDelete = confirm("¿Realmente quiere eliminar el libro?");
-      if (validateDelete) {
-        tBodyTableBooks.removeChild(bookDelete);
-        let bookDeleteArray = library.findIndex(
-          (book) => book.name == bookDelete.firstChild.textContent
-        );
-        library.splice(bookDeleteArray, 1);
-        if(library.length == 0) {
-          messageBooks(false)
-        }
-      } else {
-        console.log("No se elimino por voluntad del usuario");
+      //let validateDelete = confirm("¿Realmente quiere eliminar el libro?");
+      //if (validateDelete) {
+      tBodyTableBooks.removeChild(bookDelete);
+      let bookDeleteArray = library.findIndex(
+        (book) => book.name == bookDelete.firstChild.textContent
+      );
+      library.splice(bookDeleteArray, 1);
+      if (library.length == 0) {
+        messageBooks(false);
       }
+      //} else {
+      console.log("No se elimino por voluntad del usuario");
+      //}
     });
   });
 }
 function displayBooks() {
   if (library.length == 0) {
-    messageBooks(false)
+    messageBooks(false);
   } else {
-    messageBooks(true)
+    messageBooks(true);
     for (let i = 0; i < library.length; i++) {
       let tr = document.createElement("tr");
       let tdName = document.createElement("td");
@@ -153,6 +145,5 @@ function adminPopupNewBook() {
     });
   });
 }
-
 displayBooks();
 adminPopupNewBook();
