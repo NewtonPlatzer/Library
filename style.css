@@ -5,7 +5,7 @@
 :root {
   font-size: 18px;
   --main-color: rgb(36, 37, 40);
-  --secondary-color: rgb(31, 62, 89);
+  --secondary-color: #1f3e59;
 }
 
 .container {
@@ -17,12 +17,16 @@
   width: 100%;
 }
 nav {
-  background-color: var(--main-color);
+  background-color: var(--secondary-color);
   color: white;
-  padding: 0.5rem;
   text-align: center;
-  & h1 {
-    font-size: 1.2rem;
+  padding-top: 1rem;
+  & a {
+    & img {
+      width: 130px;
+      object-fit: contain;
+      margin-right: 16px;
+    }
   }
 }
 #new-book-popup {
@@ -47,7 +51,7 @@ nav {
     font-size: 0.9rem;
     outline: none;
     margin-top: 0.3rem;
-    padding-left: 2px!important;
+    padding-left: 2px !important;
     &:focus {
       transform: scale(1.05);
       margin-left: 5px;
@@ -134,10 +138,14 @@ table {
 }
 thead {
   font-size: 1.1rem;
+
   & tr {
     background-color: var(--secondary-color);
     color: white;
   }
+}
+tr th td {
+  border-radius: 12px !important;
 }
 tbody {
   & tr td:first-of-type {
@@ -150,7 +158,7 @@ tbody {
     }
   }
   & tr:nth-child(even) {
-    background-color: rgb(195, 194, 194);
+    background-color: #9f9f9f;
   }
 }
 th,
@@ -171,4 +179,9 @@ td a .bi-trash-fill {
   color: red;
   font-size: 1.3rem;
   text-align: center;
+  cursor: pointer;
+  transition: 0.08s;
+  &:hover {
+    color: rgb(182, 3, 3);
+  }
 }
