@@ -1,4 +1,4 @@
-const library = [];
+let library = [];
 
 class Book {
   constructor(index, name, author, pages, status) {
@@ -13,7 +13,6 @@ class Book {
 function messageBooks(option) {
   let containerLibrary = document.querySelector(".container-library");
   let tableBooks = document.getElementById("table-books");
-  //let tBodyTableBooks = document.querySelector("#tbody-table-books");
   let messageNoBooks = document.querySelector(".message-no-books");
   let btnNewBook2 = document.querySelector(".newBook2");
 
@@ -35,28 +34,31 @@ function addBookToLibrary(name, author, pages, status) {
   let index = library.length + 1;
   let book = new Book(index, name, author, pages, status);
   library.push(book);
+  // if (library.length == 1) {
+  //   window.location.reload();
+  // }
   localStorage.setItem("library", JSON.stringify(library)); // Almacenamiento
   //
-  let tBodyTableBooks = document.querySelector("#tbody-table-books");
-  let tr = document.createElement("tr");
-  let tdName = document.createElement("td");
-  let tdAuthor = document.createElement("td");
-  let tdPages = document.createElement("td");
-  let tdStatus = document.createElement("td");
-  let tdTrash = document.createElement("td");
-  tdName.innerText = library[library.length - 1].name;
-  tdAuthor.innerText = library[library.length - 1].author;
-  tdPages.innerText = library[library.length - 1].pages;
-  tdStatus.innerText = library[library.length - 1].status;
-  tdTrash.innerHTML =
-    '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
-  tr.appendChild(tdName);
-  tr.appendChild(tdAuthor);
-  tr.appendChild(tdPages);
-  tr.appendChild(tdStatus);
-  tr.appendChild(tdTrash);
-  tBodyTableBooks.appendChild(tr);
-
+  // let tBodyTableBooks = document.querySelector("#tbody-table-books");
+  // let tr = document.createElement("tr");
+  // let tdName = document.createElement("td");
+  // let tdAuthor = document.createElement("td");
+  // let tdPages = document.createElement("td");
+  // let tdStatus = document.createElement("td");
+  // let tdTrash = document.createElement("td");
+  // tdName.innerText = library[library.length - 1].name;
+  // tdAuthor.innerText = library[library.length - 1].author;
+  // tdPages.innerText = library[library.length - 1].pages;
+  // tdStatus.innerText = library[library.length - 1].status;
+  // tdTrash.innerHTML =
+  //   '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
+  // tr.appendChild(tdName);
+  // tr.appendChild(tdAuthor);
+  // tr.appendChild(tdPages);
+  // tr.appendChild(tdStatus);
+  // tr.appendChild(tdTrash);
+  // tBodyTableBooks.appendChild(tr);
+  window.location.reload();
   removeBook();
 }
 function removeBook() {
@@ -72,43 +74,51 @@ function removeBook() {
         (book) => book.name == bookDelete.firstChild.textContent
       );
       library.splice(bookDeleteArray, 1);
+      localStorage.setItem("library", library);
       if (library.length == 0) {
         messageBooks(false);
       }
       //} else {
-      console.log("No se elimino por voluntad del usuario");
+      //console.log("No se elimino por voluntad del usuario");
       //}
     });
   });
 }
 function displayBooks() {
-  let libraryLocalStorage = localStorage.getItem("library");
-  let libraryReal = JSON.parse(libraryLocalStorage);
-  if (libraryReal.length == 0) {
+  // Lista
+  //var storageLength = localStorage.length;
+  if (localStorage.length == 0 || localStorage.library == "") {
     messageBooks(false);
   } else {
     messageBooks(true);
-    for (let i = 0; i < libraryReal.length; i++) {
+    let libraryLocalStorage = localStorage.getItem("library");
+    console.table(library);
+    library = JSON.parse(libraryLocalStorage);
+    console.table(library);
+    for (let i = 0; i < library.length; i++) {
       let tBodyTableBooks = document.querySelector("#tbody-table-books");
-
       let tr = document.createElement("tr");
       let tdName = document.createElement("td");
       let tdAuthor = document.createElement("td");
       let tdPages = document.createElement("td");
       let tdStatus = document.createElement("td");
       let tdTrash = document.createElement("td");
-      tdName.innerText = libraryReal[i].name;
-      tdAuthor.innerText = libraryReal[i].author;
-      tdPages.innerText = libraryReal[i].pages;
-      tdStatus.innerText = libraryReal[i].status;
-      tdTrash.innerHTML = '<a><i class="bi bi-trash-fill"></i></a>';
+      tdName.innerText = library[i].name;
+      tdAuthor.innerText = library[i].author;
+      tdPages.innerText = library[i].pages;
+      tdStatus.innerText = library[i].status;
+      tdTrash.innerHTML =
+        '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
       tr.appendChild(tdName);
       tr.appendChild(tdAuthor);
       tr.appendChild(tdPages);
       tr.appendChild(tdStatus);
       tr.appendChild(tdTrash);
       tBodyTableBooks.appendChild(tr);
+      removeBook();
+
     }
+    //adminPopupNewBook();
   }
 }
 function adminPopupNewBook() {
@@ -144,6 +154,7 @@ function adminPopupNewBook() {
       });
       document.addEventListener("keydown", (event) => {
         if (event.key == "Escape") {
+          nBookPopup.close();
           nBookPopup.style.display = "none";
         }
       });
