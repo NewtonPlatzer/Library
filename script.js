@@ -38,28 +38,7 @@ function addBookToLibrary(name, author, pages, status) {
   //   window.location.reload();
   // }
   localStorage.setItem("library", JSON.stringify(library)); // Almacenamiento
-  //
-  // let tBodyTableBooks = document.querySelector("#tbody-table-books");
-  // let tr = document.createElement("tr");
-  // let tdName = document.createElement("td");
-  // let tdAuthor = document.createElement("td");
-  // let tdPages = document.createElement("td");
-  // let tdStatus = document.createElement("td");
-  // let tdTrash = document.createElement("td");
-  // tdName.innerText = library[library.length - 1].name;
-  // tdAuthor.innerText = library[library.length - 1].author;
-  // tdPages.innerText = library[library.length - 1].pages;
-  // tdStatus.innerText = library[library.length - 1].status;
-  // tdTrash.innerHTML =
-  //   '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
-  // tr.appendChild(tdName);
-  // tr.appendChild(tdAuthor);
-  // tr.appendChild(tdPages);
-  // tr.appendChild(tdStatus);
-  // tr.appendChild(tdTrash);
-  // tBodyTableBooks.appendChild(tr);
   window.location.reload();
-  removeBook();
 }
 function removeBook() {
   let tBodyTableBooks = document.querySelector("#tbody-table-books");
@@ -74,7 +53,7 @@ function removeBook() {
         (book) => book.name == bookDelete.firstChild.textContent
       );
       library.splice(bookDeleteArray, 1);
-      localStorage.setItem("library", library);
+      localStorage.setItem("library", JSON.stringify(library))
       if (library.length == 0) {
         messageBooks(false);
       }
@@ -84,17 +63,39 @@ function removeBook() {
     });
   });
 }
+
+function changeStatus() {
+  //let tBodyTableBooks = document.querySelector("#tbody-table-books");
+  let btnsChangeStatus = document.querySelectorAll("#btn-change-status");
+  btnsChangeStatus.forEach((btnChangeStatus) => {
+    btnChangeStatus.addEventListener("click", () => {
+      let bookChange = btnChangeStatus.parentNode.parentNode;
+      let idBookChangeState = library.findIndex(
+        (book) => book.name == bookChange.firstChild.textContent
+      );
+      if (btnChangeStatus.textContent == "No leído") {
+        library[idBookChangeState].status = "Leído";
+        localStorage.setItem("library", JSON.stringify(library));
+        btnChangeStatus.classList.toggle("btnRead");
+        window.location.reload();
+      } else {
+        library[idBookChangeState].status = "No leído";
+        localStorage.setItem("library", JSON.stringify(library));
+        btnChangeStatus.classList.add("btnNoRead");
+        window.location.reload();
+      }
+    });
+  });
+  //console.log(`El estatus del libro es: ${status}`);
+}
+
 function displayBooks() {
-  // Lista
-  //var storageLength = localStorage.length;
-  if (localStorage.length == 0 || localStorage.library == "") {
+  if (localStorage.length == 0) {
     messageBooks(false);
   } else {
     messageBooks(true);
     let libraryLocalStorage = localStorage.getItem("library");
-    console.table(library);
     library = JSON.parse(libraryLocalStorage);
-    console.table(library);
     for (let i = 0; i < library.length; i++) {
       let tBodyTableBooks = document.querySelector("#tbody-table-books");
       let tr = document.createElement("tr");
@@ -106,9 +107,13 @@ function displayBooks() {
       tdName.innerText = library[i].name;
       tdAuthor.innerText = library[i].author;
       tdPages.innerText = library[i].pages;
-      tdStatus.innerText = library[i].status;
-      tdTrash.innerHTML =
-        '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
+      if (library[i].status == "Leído") {
+        tdStatus.innerHTML = `<button id="btn-change-status" class="btnRead">${library[i].status}</button>`;
+      } else {
+        tdStatus.innerHTML = `<button id="btn-change-status" class="btnNoRead">${library[i].status}</button>`;
+      }
+
+      tdTrash.innerHTML = '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
       tr.appendChild(tdName);
       tr.appendChild(tdAuthor);
       tr.appendChild(tdPages);
@@ -118,7 +123,8 @@ function displayBooks() {
       removeBook();
 
     }
-    //adminPopupNewBook();
+    changeStatus();
+    removeBook();
   }
 }
 function adminPopupNewBook() {
