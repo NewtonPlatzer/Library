@@ -1,4 +1,4 @@
-const library = [];
+let library = [];
 
 class Book {
   constructor(index, name, author, pages, status) {
@@ -37,26 +37,26 @@ function addBookToLibrary(name, author, pages, status) {
   library.push(book);
   localStorage.setItem("library", JSON.stringify(library)); // Almacenamiento
   //
-  let tBodyTableBooks = document.querySelector("#tbody-table-books");
-  let tr = document.createElement("tr");
-  let tdName = document.createElement("td");
-  let tdAuthor = document.createElement("td");
-  let tdPages = document.createElement("td");
-  let tdStatus = document.createElement("td");
-  let tdTrash = document.createElement("td");
-  tdName.innerText = library[library.length - 1].name;
-  tdAuthor.innerText = library[library.length - 1].author;
-  tdPages.innerText = library[library.length - 1].pages;
-  tdStatus.innerText = library[library.length - 1].status;
-  tdTrash.innerHTML =
-    '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
-  tr.appendChild(tdName);
-  tr.appendChild(tdAuthor);
-  tr.appendChild(tdPages);
-  tr.appendChild(tdStatus);
-  tr.appendChild(tdTrash);
-  tBodyTableBooks.appendChild(tr);
-
+  // let tBodyTableBooks = document.querySelector("#tbody-table-books");
+  // let tr = document.createElement("tr");
+  // let tdName = document.createElement("td");
+  // let tdAuthor = document.createElement("td");
+  // let tdPages = document.createElement("td");
+  // let tdStatus = document.createElement("td");
+  // let tdTrash = document.createElement("td");
+  // tdName.innerText = library[library.length - 1].name;
+  // tdAuthor.innerText = library[library.length - 1].author;
+  // tdPages.innerText = library[library.length - 1].pages;
+  // tdStatus.innerText = library[library.length - 1].status;
+  // tdTrash.innerHTML =
+  //   '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
+  // tr.appendChild(tdName);
+  // tr.appendChild(tdAuthor);
+  // tr.appendChild(tdPages);
+  // tr.appendChild(tdStatus);
+  // tr.appendChild(tdTrash);
+  // tBodyTableBooks.appendChild(tr);
+  window.location.reload();
   removeBook();
 }
 function removeBook() {
@@ -81,16 +81,28 @@ function removeBook() {
     });
   });
 }
+
+function changeStatus() {
+  let btnsChangeStatus = document.querySelectorAll("#btn-change-status");
+  let status;
+  btnsChangeStatus.forEach((btnChangeStatus) => {
+    btnChangeStatus.addEventListener("click", () => {
+      status = btnChangeStatus.textContent;
+      console.table(library);
+    });
+  });
+  //console.log(`El estatus del libro es: ${status}`);
+}
+
 function displayBooks() {
-  let libraryLocalStorage = localStorage.getItem("library");
-  let libraryReal = JSON.parse(libraryLocalStorage);
-  if (libraryReal.length == 0) {
+  if (localStorage.length == 0) {
     messageBooks(false);
   } else {
     messageBooks(true);
+    let libraryLocalStorage = localStorage.getItem("library");
+    libraryReal = JSON.parse(libraryLocalStorage);
     for (let i = 0; i < libraryReal.length; i++) {
       let tBodyTableBooks = document.querySelector("#tbody-table-books");
-
       let tr = document.createElement("tr");
       let tdName = document.createElement("td");
       let tdAuthor = document.createElement("td");
@@ -100,7 +112,7 @@ function displayBooks() {
       tdName.innerText = libraryReal[i].name;
       tdAuthor.innerText = libraryReal[i].author;
       tdPages.innerText = libraryReal[i].pages;
-      tdStatus.innerText = libraryReal[i].status;
+      tdStatus.innerHTML = `<button id="btn-change-status">${libraryReal[i].status}</button>`;
       tdTrash.innerHTML = '<a><i class="bi bi-trash-fill"></i></a>';
       tr.appendChild(tdName);
       tr.appendChild(tdAuthor);
@@ -109,6 +121,7 @@ function displayBooks() {
       tr.appendChild(tdTrash);
       tBodyTableBooks.appendChild(tr);
     }
+    changeStatus();
   }
 }
 function adminPopupNewBook() {
