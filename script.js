@@ -1,8 +1,11 @@
 let library = [];
 
+// Solucionado: AddBookToLibrary, removeBook
+// Faltantes: Alerta de eliminar libro, changeStatus
+
 class Book {
-  constructor(index, name, author, pages, status) {
-    this.index = index;
+  constructor(name, author, pages, status) {
+    
     this.name = name;
     this.author = author;
     this.pages = pages;
@@ -13,7 +16,6 @@ class Book {
 function messageBooks(option) {
   let containerLibrary = document.querySelector(".container-library");
   let tableBooks = document.getElementById("table-books");
-  //let tBodyTableBooks = document.querySelector("#tbody-table-books");
   let messageNoBooks = document.querySelector(".message-no-books");
   let btnNewBook2 = document.querySelector(".newBook2");
 
@@ -30,34 +32,26 @@ function messageBooks(option) {
     btnNewBook2.style.display = "none";
   }
 }
-
-function addBookToLibrary(name, author, pages, status) {
-  let index = library.length + 1;
-  let book = new Book(index, name, author, pages, status);
-  library.push(book);
-  localStorage.setItem("library", JSON.stringify(library)); // Almacenamiento
-  window.location.reload();
-}
 function removeBook() {
   let tBodyTableBooks = document.querySelector("#tbody-table-books");
   let btnsRemove = document.querySelectorAll("#btnRemoveBook");
   btnsRemove.forEach((btnRemove) => {
     btnRemove.addEventListener("click", () => {
       let bookDelete = btnRemove.parentNode.parentNode; // Obtengo la fila a eliminar del DOM
-      //let validateDelete = confirm("¿Realmente quiere eliminar el libro?");
-      //if (validateDelete) {
-      tBodyTableBooks.removeChild(bookDelete);
-      let bookDeleteArray = library.findIndex(
-        (book) => book.name == bookDelete.firstChild.textContent
-      );
-      library.splice(bookDeleteArray, 1);
-      localStorage.setItem("library", JSON.stringify(library))
-      if (library.length == 0) {
-        messageBooks(false);
+      let validateDelete = confirm("¿Realmente quiere eliminar el libro?");
+      if (validateDelete) {
+        tBodyTableBooks.removeChild(bookDelete);
+        let bookDeleteArray = library.findIndex(
+          (book) => book.name == bookDelete.firstChild.textContent
+        );
+        library.splice(bookDeleteArray, 1);
+        localStorage.setItem("library", JSON.stringify(library));
+        if (library.length == 0) {
+          messageBooks(false);
+        }
+      } else {
+        console.log("No se elimino por voluntad del usuario");
       }
-      //} else {
-      console.log("No se elimino por voluntad del usuario");
-      //}
     });
   });
 }
@@ -74,17 +68,57 @@ function changeStatus() {
       if (btnChangeStatus.textContent == "No leído") {
         library[idBookChangeState].status = "Leído";
         localStorage.setItem("library", JSON.stringify(library));
+        btnChangeStatus.innerText = "Leído";
         btnChangeStatus.classList.toggle("btnRead");
-        window.location.reload();
+        btnChangeStatus.classList.toggle("btnNoRead");
+        //window.location.reload();
       } else {
         library[idBookChangeState].status = "No leído";
         localStorage.setItem("library", JSON.stringify(library));
-        btnChangeStatus.classList.add("btnNoRead");
-        window.location.reload();
+        btnChangeStatus.innerText = "No leído";
+        btnChangeStatus.classList.toggle("btnRead");
+        btnChangeStatus.classList.toggle("btnNoRead");
+        //window.location.reload();
       }
     });
   });
   //console.log(`El estatus del libro es: ${status}`);
+}
+
+function addBookToLibrary(name, author, pages, status) {
+ 
+  let book = new Book(name, author, pages, status);
+  library.push(book);
+  localStorage.setItem("library", JSON.stringify(library)); // Almacenamiento
+  let tBodyTableBooks = document.querySelector("#tbody-table-books");
+  let tr = document.createElement("tr");
+  let tdName = document.createElement("td");
+  let tdAuthor = document.createElement("td");
+  let tdPages = document.createElement("td");
+  let tdStatus = document.createElement("td");
+  let tdTrash = document.createElement("td");
+  tdName.innerText = library.at(-1).name;
+  tdAuthor.innerText = library.at(-1).author;
+  tdPages.innerText = library.at(-1).pages;
+  if (library.at(-1).status == "Leído") {
+    tdStatus.innerHTML = `<button id="btn-change-status" class="btnRead">${
+      library.at(-1).status
+    }</button>`;
+  } else {
+    tdStatus.innerHTML = `<button id="btn-change-status" class="btnNoRead">${
+      library.at(-1).status
+    }</button>`;
+  }
+  tdTrash.innerHTML =
+    '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
+  tr.appendChild(tdName);
+  tr.appendChild(tdAuthor);
+  tr.appendChild(tdPages);
+  tr.appendChild(tdStatus);
+  tr.appendChild(tdTrash);
+  tBodyTableBooks.appendChild(tr);
+  changeStatus();
+  removeBook();
 }
 
 function displayBooks() {
@@ -111,7 +145,8 @@ function displayBooks() {
         tdStatus.innerHTML = `<button id="btn-change-status" class="btnNoRead">${library[i].status}</button>`;
       }
 
-      tdTrash.innerHTML = '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
+      tdTrash.innerHTML =
+        '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
       tr.appendChild(tdName);
       tr.appendChild(tdAuthor);
       tr.appendChild(tdPages);
