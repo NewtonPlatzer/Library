@@ -1,11 +1,7 @@
 let library = [];
 
-// Solucionado: AddBookToLibrary, removeBook
-// Faltantes: Alerta de eliminar libro, changeStatus
-
 class Book {
   constructor(name, author, pages, status) {
-    
     this.name = name;
     this.author = author;
     this.pages = pages;
@@ -32,36 +28,13 @@ function messageBooks(option) {
     btnNewBook2.style.display = "none";
   }
 }
-function removeBook() {
-  let tBodyTableBooks = document.querySelector("#tbody-table-books");
-  let btnsRemove = document.querySelectorAll("#btnRemoveBook");
-  btnsRemove.forEach((btnRemove) => {
-    btnRemove.addEventListener("click", () => {
-      let bookDelete = btnRemove.parentNode.parentNode; // Obtengo la fila a eliminar del DOM
-      let validateDelete = confirm("¿Realmente quiere eliminar el libro?");
-      if (validateDelete) {
-        tBodyTableBooks.removeChild(bookDelete);
-        let bookDeleteArray = library.findIndex(
-          (book) => book.name == bookDelete.firstChild.textContent
-        );
-        library.splice(bookDeleteArray, 1);
-        localStorage.setItem("library", JSON.stringify(library));
-        if (library.length == 0) {
-          messageBooks(false);
-        }
-      } else {
-        console.log("No se elimino por voluntad del usuario");
-      }
-    });
-  });
-}
-
 function changeStatus() {
-  //let tBodyTableBooks = document.querySelector("#tbody-table-books");
+  
   let btnsChangeStatus = document.querySelectorAll("#btn-change-status");
   btnsChangeStatus.forEach((btnChangeStatus) => {
     btnChangeStatus.addEventListener("click", () => {
       let bookChange = btnChangeStatus.parentNode.parentNode;
+     
       let idBookChangeState = library.findIndex(
         (book) => book.name == bookChange.firstChild.textContent
       );
@@ -71,22 +44,60 @@ function changeStatus() {
         btnChangeStatus.innerText = "Leído";
         btnChangeStatus.classList.toggle("btnRead");
         btnChangeStatus.classList.toggle("btnNoRead");
-        //window.location.reload();
+
       } else {
         library[idBookChangeState].status = "No leído";
         localStorage.setItem("library", JSON.stringify(library));
         btnChangeStatus.innerText = "No leído";
         btnChangeStatus.classList.toggle("btnRead");
         btnChangeStatus.classList.toggle("btnNoRead");
-        //window.location.reload();
+ 
       }
     });
   });
-  //console.log(`El estatus del libro es: ${status}`);
+
+}
+function removeBook() {
+  let tBodyTableBooks = document.querySelector("#tbody-table-books");
+  let btnsRemove = document.querySelectorAll("#btnRemoveBook");
+  let popupAlert = document.querySelector("#delete-alert");
+  let btnCloseAlert = document.querySelector("#btn-cancel-delete");
+  let btnAcceptDelete = document.querySelector("#btn-submit-delete");
+  let bookDelete
+  btnsRemove.forEach((btnRemove) => {
+    btnRemove.addEventListener("click", () => {
+      popupAlert.showModal();
+      popupAlert.style.display = "flex";
+      btnAcceptDelete.addEventListener("click", function () {
+        popupAlert.close();
+        popupAlert.style.display = "none";
+        bookDelete = btnRemove.parentNode.parentNode;
+        let bookDeleteArray = library.findIndex(
+          (book) => book.name == bookDelete.firstChild.textContent
+        );
+        library.splice(bookDeleteArray, 1);
+        localStorage.setItem("library", JSON.stringify(library));
+        if (library.length == 0) {
+          messageBooks(false);
+          localStorage.removeItem("library");
+        }
+        tBodyTableBooks.removeChild(bookDelete);
+      });
+      btnCloseAlert.addEventListener("click", function () {
+        popupAlert.close();
+        popupAlert.style.display = "none";
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key == "Escape") {
+          popupAlert.close();
+          popupAlert.style.display = "none";
+        }
+      });
+    });
+  });
 }
 
 function addBookToLibrary(name, author, pages, status) {
- 
   let book = new Book(name, author, pages, status);
   library.push(book);
   localStorage.setItem("library", JSON.stringify(library)); // Almacenamiento
@@ -120,7 +131,6 @@ function addBookToLibrary(name, author, pages, status) {
   changeStatus();
   removeBook();
 }
-
 function displayBooks() {
   if (localStorage.length == 0) {
     messageBooks(false);
@@ -144,7 +154,6 @@ function displayBooks() {
       } else {
         tdStatus.innerHTML = `<button id="btn-change-status" class="btnNoRead">${library[i].status}</button>`;
       }
-
       tdTrash.innerHTML =
         '<a id="btnRemoveBook"><i class="bi bi-trash-fill"></i></a>';
       tr.appendChild(tdName);
@@ -154,16 +163,16 @@ function displayBooks() {
       tr.appendChild(tdTrash);
       tBodyTableBooks.appendChild(tr);
     }
-    changeStatus();
-    removeBook();
   }
+  changeStatus();
+  removeBook();
 }
 function adminPopupNewBook() {
   let btnOpenPopup = document.querySelectorAll("#newBook");
   let nBookPopup = document.getElementById("new-book-popup");
   let btnSubmit = document.getElementById("btn-submit");
   let cancelButton = document.getElementById("cancel");
-  nBookPopup.style.display = "none";
+
   btnOpenPopup.forEach((button) => {
     button.addEventListener("click", () => {
       nBookPopup.showModal(); // Se muestra el modal
@@ -180,9 +189,11 @@ function adminPopupNewBook() {
           status = "No leído";
         }
         if (name == "" || author == "") {
+          
         } else {
           addBookToLibrary(name, author, pages, status);
           document.getElementById("form-new-book").reset();
+          messageBooks(true);
         }
       });
       cancelButton.addEventListener("click", function () {
@@ -191,6 +202,7 @@ function adminPopupNewBook() {
       });
       document.addEventListener("keydown", (event) => {
         if (event.key == "Escape") {
+          nBookPopup.close();
           nBookPopup.style.display = "none";
         }
       });

@@ -29,7 +29,7 @@ nav {
     }
   }
 }
-#new-book-popup {
+dialog {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -37,10 +37,24 @@ nav {
   border: 0;
   border-radius: 12px;
   text-align: center;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  & button {
+    margin-top: 0.5rem;
+    padding: 8px 1rem;
+    border: 0;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  &::backdrop {
+    background-color: rgba(36, 37, 40, 0.634);
+  }
+}
+#new-book-popup {
   & h3 {
     font-size: 1.3rem;
   }
@@ -72,19 +86,7 @@ nav {
   & h4 {
     margin-top: 0.5rem;
   }
-  &::backdrop {
-    background-color: rgba(36, 37, 40, 0.634);
-  }
-  & button {
-    margin-top: 0.5rem;
-    padding: 8px 1rem;
-    border: 0;
-    border-radius: 2px;
-    font-size: 0.9rem;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+
   & #cancel {
     background-color: rgb(172, 34, 34);
     &:hover {
@@ -92,6 +94,26 @@ nav {
     }
   }
   & #btn-submit {
+    background-color: var(--secondary-color);
+    &:hover {
+      background-color: rgb(18, 36, 53);
+    }
+  }
+}
+#delete-alert {
+  & button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    margin: auto 4px;
+    margin-top: 0.8rem;
+  }
+  & #btn-submit-delete {
+    background-color: rgb(172, 34, 34);
+    &:hover {
+      background-color: rgb(121, 23, 23);
+    }
+  }
+  & #btn-cancel-delete {
     background-color: var(--secondary-color);
     &:hover {
       background-color: rgb(18, 36, 53);
