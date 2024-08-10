@@ -1,5 +1,5 @@
 let library = [];
-
+Window.alert("Buenas tardes Paola que Pena, muchas gracias por revisar este proyecto. Con todo mi aprecio Newton")
 class Book {
   constructor(index, name, author, pages, status) {
     this.index = index;
