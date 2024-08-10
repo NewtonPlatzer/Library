@@ -9,7 +9,6 @@ class Book {
     this.status = status;
   }
 }
-
 function messageBooks(option) {
   let containerLibrary = document.querySelector(".container-library");
   let tableBooks = document.getElementById("table-books");
@@ -125,6 +124,7 @@ function displayBooks() {
     }
     changeStatus();
     removeBook();
+    alert("Hola Paola que pena, me alegra que puedas revisar este proyecto. Con todo mi cariño Newton")
   }
 }
 function adminPopupNewBook() {
